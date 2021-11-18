@@ -2,12 +2,12 @@
 % Please edit documentation in R/read_acq_text.R
 \name{read_acq_text}
 \alias{read_acq_text}
-\title{Read a text file exported from BIOPAC AcqKnowledge}
+\title{Read a text file exported from BIOPAC AcqKnowledge.}
 \usage{
-read_acq_text(file_name, delim, keep_channels)
+read_acq_text(file, delim, keep_channels)
 }
 \arguments{
-\item{file_name}{Name of data file to read.}
+\item{file}{Name of data file to read.}
 
 \item{delim}{Single character used to separate fields within a record.}
 
@@ -17,12 +17,12 @@ read_acq_text(file_name, delim, keep_channels)
 A tibble.
 }
 \description{
-Read a text file exported from BIOPAC AcqKnowledge
+Wrapper around readr::read_delim(). Additionally processes header lines with readr::read_lines(), and adds a time variable for convenient plotting.
 }
 \examples{
-# read_acq_text(
-#     "folder/file.txt",
-#     delim = ",",
-#     keep_channels = c("Zyg","Corr","Marker")
-#     )
+read_acq_text(
+    countenance_example("femg_raw_exported_sample.txt"),
+    delim = ",",
+    keep_channels = c("Zyg Processed","Corr Processed","Marker")
+    )
 }
