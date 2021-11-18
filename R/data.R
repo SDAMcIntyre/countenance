@@ -1,0 +1,15 @@
+#' 13 seconds of raw facial EMG data
+#'
+#' A dataset that has been read in with countenance::read_acq_text(). It is a 13-second sample of a longer recording session.
+#'
+#' @format A data frame with 13150 rows and 5 variables:
+#' \describe{
+#'   \item{Corr Processed}{corrugator muscle signal in mV}
+#'   \item{Zyg Processed}{zygomaticus muscle signal in mV}
+#'   \item{Lev Processed}{levator muscle signal in mV}
+#'   \item{Marker}{stimulus marker channel in V}
+#'   \item{time_sec}{time in seconds from the start of file, added by read_acq_text()}
+#'   ...
+#' }
+#' @source \url{https://figshare.com/articles/dataset/Emotional_processing_of_emojis_and_human_faces/13582379?file=26064707}
+"femg_raw_data_sample"
