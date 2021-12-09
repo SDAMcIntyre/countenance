@@ -21,7 +21,7 @@ plot_marker_sequence(
 \item{time_channel}{the name of the column in femg_data that gives the time in seconds}
 }
 \value{
-a ggplot object
+a plotly object
 }
 \description{
 Create a ggplot object, plotting the sequence of transitions found in a marker channel, and highlighting unexpected values in red.

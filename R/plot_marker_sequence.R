@@ -7,7 +7,7 @@
 #' @param unexpected_channel the name of the column in femg_data that is a boolean indicating if the channel was unexpected
 #' @param time_channel the name of the column in femg_data that gives the time in seconds
 #'
-#' @return a ggplot object
+#' @return a plotly object
 #' @export
 #'
 #' @examples
@@ -18,7 +18,7 @@ plot_marker_sequence <- function(femg_data, marker_channel, unexpected_channel =
     .[[marker_channel]] %>%
     unique()
 
-  femg_data %>%
+  p <- femg_data %>%
     add_transitions(marker_channel) %>%
     dplyr::filter(.data$transition_start | .data$transition_end) %>%
     ggplot2::ggplot(ggplot2::aes(x = .data[[time_channel]], y = .data[[marker_channel]])) +
@@ -30,4 +30,5 @@ plot_marker_sequence <- function(femg_data, marker_channel, unexpected_channel =
          y = 'Marker Value',
          x = 'Time (sec)'
       )
+  p %>% plotly::ggplotly()
 }
