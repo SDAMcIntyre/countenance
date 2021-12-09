@@ -1,3 +1,4 @@
+OFF_MARKER_VALUE <- 0
 
 #' Denoise
 #'
@@ -11,7 +12,9 @@
 #' @export
 #'
 #' @examples
-denoise <- function(marker_channel, denoise_width = 'auto', values_to_ignore = c(0)) {
+denoise <- function(marker_channel, denoise_width = 'auto', values_to_ignore = c()) {
+
+  values_to_ignore <- c(values_to_ignore, OFF_MARKER_VALUE)
 
   # automatically determine the denoise width
   if (denoise_width == 'auto') {
@@ -60,9 +63,8 @@ denoise <- function(marker_channel, denoise_width = 'auto', values_to_ignore = c
 #'
 #' @param femg_data data frame or tibble
 #' @param marker_channel the name of the column in femg_data that corresponds to the marker channel
-#' @param off_marker_value the value of the marker channel indicating no stimulus/task (default = 0)
 #' @param valid_marker_values valid marker values to be found in marker_channel that are used to indicate the stimulus/task
-#' @param invalid_marker_values invalid marker values that can safely be set to off_marker_value
+#' @param invalid_marker_values invalid marker values that can safely be set to 0/off
 #' @param denoise_width an integer or "auto". The number of samples for which to take the median as a method to remove individual samples with unexpected values.
 #'
 #' @return femg_data with additional column (marker_channel)_cleaned
@@ -77,7 +79,6 @@ denoise <- function(marker_channel, denoise_width = 'auto', values_to_ignore = c
 clean_marker_channel <- function(
   femg_data,
   marker_channel,
-  off_marker_value = 0,
   valid_marker_values,
   invalid_marker_values = c(),
   denoise_width = 'auto'
@@ -86,7 +87,7 @@ clean_marker_channel <- function(
   denoised <- denoise(
     dplyr::pull(femg_data[marker_channel]),
     denoise_width = denoise_width,
-    values_to_ignore = c(off_marker_value, invalid_marker_values)
+    values_to_ignore = c(OFF_MARKER_VALUE, invalid_marker_values)
     )
 
   name_marker_channel_cleaned <- paste(marker_channel, "cleaned", sep = "_")
@@ -97,13 +98,13 @@ clean_marker_channel <- function(
       Stim.flag.noise = denoised$flagged,
       !!name_marker_channel_cleaned := denoised$cleaned) %>%
     dplyr::mutate(
-    #   #set known noise codes to 0
+    #   #set known noise codes to 0/off
       !!name_marker_channel_cleaned := replace(
         .data[[name_marker_channel_cleaned]], # vector to find values to replace
         .data[[name_marker_channel_cleaned]] %in% invalid_marker_values, # condition
-        off_marker_value), # replace with
+        OFF_MARKER_VALUE), # replace with
       # is the stim code an unexpected one?
-      unexpected = .data[[name_marker_channel_cleaned]] %in%  c(off_marker_value, valid_marker_values) == FALSE
+      unexpected = .data[[name_marker_channel_cleaned]] %in%  c(OFF_MARKER_VALUE, valid_marker_values) == FALSE
     )
 }
 
