@@ -4,7 +4,7 @@
 \alias{denoise}
 \title{Denoise}
 \usage{
-denoise(marker_channel, denoise_width = "auto", values_to_ignore = c(0))
+denoise(marker_channel, denoise_width = "auto", values_to_ignore = c())
 }
 \arguments{
 \item{marker_channel}{a vector, the marker channel to denoise}

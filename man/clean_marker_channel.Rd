@@ -7,7 +7,6 @@
 clean_marker_channel(
   femg_data,
   marker_channel,
-  off_marker_value = 0,
   valid_marker_values,
   invalid_marker_values = c(),
   denoise_width = "auto"
@@ -18,11 +17,9 @@ clean_marker_channel(
 
 \item{marker_channel}{the name of the column in femg_data that corresponds to the marker channel}
 
-\item{off_marker_value}{the value of the marker channel indicating no stimulus/task (default = 0)}
-
 \item{valid_marker_values}{valid marker values to be found in marker_channel that are used to indicate the stimulus/task}
 
-\item{invalid_marker_values}{invalid marker values that can safely be set to off_marker_value}
+\item{invalid_marker_values}{invalid marker values that can safely be set to 0/off}
 
 \item{denoise_width}{an integer or "auto". The number of samples for which to take the median as a method to remove individual samples with unexpected values.}
 }
