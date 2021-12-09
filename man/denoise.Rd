@@ -14,7 +14,7 @@ denoise(marker_channel, denoise_width = "auto", values_to_ignore = c(0))
 \item{values_to_ignore}{a vector of values in marker_channel that should not be subject to denoising}
 }
 \value{
-a list of flagged indices, and the full corrected marker channel
+a list of flagged indices, and the full cleaned marker channel
 }
 \description{
 Internal function called by clean_marker_channel().

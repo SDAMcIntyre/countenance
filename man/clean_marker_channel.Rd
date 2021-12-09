@@ -27,7 +27,7 @@ clean_marker_channel(
 \item{denoise_width}{an integer or "auto". The number of samples for which to take the median as a method to remove individual samples with unexpected values.}
 }
 \value{
-femg_data with additional column (marker_channel)_corrected
+femg_data with additional column (marker_channel)_cleaned
 }
 \description{
 Clean the marker channel of an fEMG recording
