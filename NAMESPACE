@@ -3,6 +3,7 @@
 export("%>%")
 export(add_transitions)
 export(clean_marker_channel)
+export(compare_session_log)
 export(countenance_example)
 export(denoise)
 export(fill_marker_values)
