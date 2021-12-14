@@ -79,7 +79,8 @@ compare_session_log <- function(
     dplyr::select(c(log_marker_channel, log_start_time, log_duration, log_end_time)) %>%
     dplyr::mutate(
       log_start_time = log_start_time + offset,
-      log_end_time = log_end_time + offset)
+      log_end_time = log_end_time + offset
+      )
 
   # get the sequence of markers in the femg data
   data_marker_sequence <- femg_data %>%
@@ -93,7 +94,8 @@ compare_session_log <- function(
   # output list initiated
   output <- list(
     'session_log_aligned' = log_aligned,
-    'synced' = synced)
+    'synced' = synced
+    )
 
   # start times for all markers in femg data
   data_start_time <- femg_data %>%
@@ -133,22 +135,25 @@ compare_session_log <- function(
       data = log_aligned,
       ggplot2::aes(x = .data[[log_start_time]], y = .data[[log_marker_channel]]),
       colour = 'blue',
-      shape = 3) +
+      shape = 3
+      ) +
     ggplot2::geom_text(
       data = log_aligned,
       ggplot2::aes(x = .data[[log_start_time]], y = .data[[log_marker_channel]] + 20, label = .data[[log_marker_channel]]),
-      colour = 'blue') +
+      colour = 'blue'
+      ) +
     ggplot2::geom_point(
       data = log_aligned,ggplot2::aes(x = log_end_time, y = OFF_MARKER_VALUE),
       colour = 'blue',
-      shape = 4) +
+      shape = 4
+      ) +
     ggplot2::labs(
-      title = 'Black: stim codes in femg file; Blue: stim codes in stim file',
+      title = 'Black: marker values in femg file; Blue: marker values in session log file',
       y = data_marker_channel
       )
 
   # add plot to output
-  output$comparison_plot <- comparison_plot
+  output$comparison_plot <- plotly::ggplotly(comparison_plot)
 
   name_log_marker_channel_filled = paste(log_marker_channel, "filled", sep = "_")
 
@@ -202,20 +207,21 @@ compare_session_log <- function(
         data = log_aligned,
         ggplot2::aes(x = log_end_time, y = OFF_MARKER_VALUE),
         colour = 'blue',
-        shape = 4) +
+        shape = 4
+        ) +
       ggplot2::labs(
         title = 'Green: stim codes in femg file (duration filled from stim file); Blue: stim codes in stim file',
         y = data_marker_channel
         )
 
     output$femg_data_filled_markers <- femg_data_filled_markers
-    output$filled_plot <- filled_plot
+    output$filled_plot <- plotly::ggplotly(filled_plot)
 
   } else {
     start_median <- stats::median(start_offsets)
     end_median <- stats::median(end_offsets)
     if (end_median > 3*start_median) {
-      warning(paste('compare_stim_face_emoji_expt()\n',
+      warning(paste('compare_session_log()\n',
                     'offsets for the end of the stimulus are between',
                     prettyNum(min(end_offsets)), 'and', prettyNum(max(end_offsets)),
                     'seconds (median =', prettyNum(end_median),
