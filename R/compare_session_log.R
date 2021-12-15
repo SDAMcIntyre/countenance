@@ -60,14 +60,14 @@ compare_session_log <- function(
   log_first_marker_start <- session_log %>%
     dplyr::filter(.data[[log_marker_channel]] != OFF_MARKER_VALUE) %>%
     dplyr::summarise(start = min(.data[[log_start_time]])) %>%
-    dplyr::pull(start)
+    dplyr::pull(.data$start)
 
   # get time of first stimulus in femg data
   femg_data <- femg_data %>%
     add_transitions(data_marker_channel)
 
   data_first_marker_start <- femg_data %>%
-    dplyr::filter(.data$transition.start & .data[[data_marker_channel]] != OFF_MARKER_VALUE) %>%
+    dplyr::filter(.data$transition_start & .data[[data_marker_channel]] != OFF_MARKER_VALUE) %>%
     dplyr::summarise(start = min(.data[[data_time_channel]])) %>%
     dplyr::pull(.data$start)
 
@@ -84,7 +84,7 @@ compare_session_log <- function(
 
   # get the sequence of markers in the femg data
   data_marker_sequence <- femg_data %>%
-    dplyr::filter(.data$transition.start & .data[[data_marker_channel]] != OFF_MARKER_VALUE) %>%
+    dplyr::filter(.data$transition_start & .data[[data_marker_channel]] != OFF_MARKER_VALUE) %>%
     dplyr::pull(.data[[data_marker_channel]])
 
   # is the sequence in the femg data  the same as in the log?
@@ -99,12 +99,12 @@ compare_session_log <- function(
 
   # start times for all markers in femg data
   data_start_time <- femg_data %>%
-    dplyr::filter(.data$transition.start & .data[[data_marker_channel]] != OFF_MARKER_VALUE) %>%
+    dplyr::filter(.data$transition_start & .data[[data_marker_channel]] != OFF_MARKER_VALUE) %>%
     dplyr::pull(.data[[data_time_channel]])
 
   # end times for all markers in femg data
   data_end_time <- femg_data %>%
-    dplyr::filter(.data$transition.end & .data[[data_marker_channel]] != OFF_MARKER_VALUE) %>%
+    dplyr::filter(.data$transition_end & .data[[data_marker_channel]] != OFF_MARKER_VALUE) %>%
     dplyr::pull(.data[[data_time_channel]])
 
   if (synced) {
@@ -119,11 +119,11 @@ compare_session_log <- function(
 
   comparison_plot <- ggplot2::ggplot() +
     ggplot2::geom_path(
-      data = dplyr::filter(femg_data, .data$transition.start | .data$transition.end),
+      data = dplyr::filter(femg_data, .data$transition_start | .data$transition_end),
       ggplot2::aes(x = .data[[data_time_channel]], y = .data[[data_marker_channel]])
       ) +
     ggplot2::geom_text(
-      data = dplyr::filter(femg_data, .data$transition.start & .data[[data_marker_channel]] != OFF_MARKER_VALUE),
+      data = dplyr::filter(femg_data, .data$transition_start & .data[[data_marker_channel]] != OFF_MARKER_VALUE),
       ggplot2::aes(
         x = .data[[data_time_channel]],
         y = .data[[data_marker_channel]] + 40,
@@ -177,13 +177,13 @@ compare_session_log <- function(
 
     filled_plot <- ggplot2::ggplot() +
       ggplot2::geom_path(
-        data = dplyr::filter(femg_data_filled_markers, .data$transition.start | .data$transition.end),
+        data = dplyr::filter(femg_data_filled_markers, .data$transition_start | .data$transition_end),
         ggplot2::aes(x = .data[[data_time_channel]], y = .data[[name_log_marker_channel_filled]]),
         colour = 'darkgreen'
         ) +
       ggplot2::geom_text(
         data = dplyr::filter(
-          femg_data_filled_markers, .data$transition.start & .data[[name_log_marker_channel_filled]] != OFF_MARKER_VALUE
+          femg_data_filled_markers, .data$transition_start & .data[[name_log_marker_channel_filled]] != OFF_MARKER_VALUE
           ),
         ggplot2::aes(
           x = .data[[data_time_channel]],
